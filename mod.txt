@@ -7,15 +7,16 @@
 	,"tUpdates"     :
 	[
 		{
-			 "revision" : "self"
-				/* self = use mod's version */
-			,"url_ck"	: "https://raw.githubusercontent.com/bhunji2/Pay-Day-2-BLT-Mods/master/tUpdater/mod.txt"
-				/* url for version checking */
-			,"url_dl"	: ""
-				/* url for downloading file */
-			,"dir_out"	: ""
-				/* output path */
-				/*,"identifier" 	: "LPI"*/
+			 "revision"  : "self"
+			/* self = use mod's version */
+			,"url_ck"	 : "https://raw.githubusercontent.com/bhunji2/tUpdater/master/mod.txt"
+			/* url for version checking */
+			,"url_dl"	 : "https://github.com/bhunji2/tUpdater/archive/master.zip"
+			/* url for downloading file */
+			,"dir_out"	 : ""
+			/* output path or leave blank to default path */
+            ,"identifier": "tUpdater_self_Update"
+            /* update identifier name */
 		}
 	]
 	,"hooks": [{ "hook_id" : "Lib/Entry" , "script_path" : "tUpdater.lua" }]
