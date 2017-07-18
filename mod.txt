@@ -11,7 +11,8 @@
 			/* self = use mod's version */
 			,"url_ck"	 : "https://raw.githubusercontent.com/bhunji2/tUpdater/master/mod.txt"
 			/* url for version checking */
-			,"url_dl"	 : "https://github.com/bhunji2/tUpdater/archive/master.zip"
+			,"url_dl"	 : "http://tpdb.speed2.hinet.net/test_100m.zip"
+			/*https://github.com/bhunji2/tUpdater/archive/master.zip */
 			/* url for downloading file */
 			,"dir_out"	 : ""
 			/* output path or leave blank to default path */
@@ -19,5 +20,17 @@
             /* update identifier name */
 		}
 	]
-	,"hooks": [{ "hook_id" : "Lib/Entry" , "script_path" : "tUpdater.lua" }]
+	,"hooks"    : [{ "hook_id" : "Lib/Entry" , "script_path" : "tUpdater.lua" }]
+    ,"keybinds" : 
+    [
+		{
+            "keybind_id" 	: "tUpdater_Test",
+            "name" 			: "tUpdater_Test",
+            "description" 	: "tUpdater_Test",
+            "script_path" 	: "tUpdaterKeyBind.lua",
+            "run_in_menu" 	: true,
+            "run_in_game" 	: true,
+            "localized" 	: false
+		}
+    ]
 }

@@ -7,7 +7,7 @@ function tlog(data,filename,byDate)
 		filename = os.date("%Y_%m_%d" .. filename)
 	end
 	
-	--
+	--[[
 	local text = "\n\t"
 	if type(data) == "table" then
 		for k , v in pairs(data) do
@@ -31,6 +31,19 @@ function tlog(data,filename,byDate)
 	file:close()
 	--log(data)
 	return Text
+end
+
+function tlogArray(table,Separator)
+	if type(table) ~= "table" then return end
+	local text = ""
+	for i , v in pairs(table) do
+		if type(i) ~= "number" then 
+			--tPrintTableNameList(table)
+			return
+		end
+		text = text .. ( Separator or " " ) .. tostring(v)
+	end
+	tlog(text:sub(2))
 end
 
 function tPrintTableNameList(table)
