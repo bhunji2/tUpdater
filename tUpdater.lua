@@ -9,6 +9,7 @@ tUpdater = tUpdater or
     ,delay      = 5
     ,updating   = { }
 	,updFullList= { }
+    ,enabled    = true --to use
     ,state      =
     {
          modLoaded  = false
@@ -19,7 +20,7 @@ tUpdater = tUpdater or
 
 --------------------------------------------------------------------------------------------------------------
 function tUpdater:State(http_id , state , msg)
-    tlog("[" .. tostring(http_id) .. "] " .. tostring(state) .. " - " .. tostring(msg) .. " <> " .. tostring(self.updating[http_id].state or "none"))
+   -- tlog("[" .. tostring(http_id) .. "] " .. tostring(state) .. " - " .. tostring(msg) .. " <> " .. tostring(self.updating[http_id].state or "none"))
     --if copyData then self.updating[http_id] = copyData end
     if state ~= nil then self.updating[http_id].state = state end
     if msg   ~= nil then self.updating[http_id].msg   = msg   end
@@ -90,6 +91,7 @@ function tUpdater:UpdateCheck(counter)
 		 i = counter
 		,update_id 	= data.identifier 
 		,mod_id 	= data.mod_id
+        ,full       = data.full
 		,http_id 	= http_id
 		,state 		= "checking" 
 	}
@@ -97,15 +99,25 @@ function tUpdater:UpdateCheck(counter)
 end
 
 function tUpdater.Downloading( http_id, bytes, total_bytes )
+    if tUpdater:State(http_id) == "checking" then return end
 	--tPrintTable({ http_id=http_id, bytes=bytes, total_bytes=total_bytes })
 	--tlog(math.floor(bytes / total_bytes * 100))
-	local percent = math.floor(bytes / total_bytes * 100)
-	tlogArray({"[",http_id,"]",bytes,"/",total_bytes,percent})
+	--tlogArray({"[",http_id,"]",bytes,"/",total_bytes,percent})
 	
-	local mod_id =  tUpdater.updating[http_id].mod_id
-	tUpdater:SetModItemTitle(mod_id,tostring(percent))
+	local mod_id        = tUpdater.updating[http_id].mod_id
+    local percent_new   = math.floor(bytes / total_bytes * 100)
+    local percent_old   = tUpdater.updating[http_id].percent or 0
+    local range         = percent_new - percent_old
+    
+    tUpdater.mods[mod_id].percent = ( tUpdater.mods[mod_id].percent or 0 ) + range
+    tUpdater.updating[http_id].percent = percent_new
+    
+    local percent_total = math.floor(tUpdater.mods[mod_id].percent / tUpdater.updating[http_id].full)
+    if percent_total < 10 then percent_total = "0" .. tostring( percent_total ) end
+	tUpdater:SetModItemTitle(mod_id,  tostring( percent_total ))
 	
-    tlog("/[tUpdates] Downloading: " .. tostring(http_id))
+    --tlog("/[tUpdates] Downloading: " .. tostring(http_id) .. tostring(percent_total))
+    --if range > 0 then tlogArray({"/[tUpdates] Downloading:",http_id,percent_total,range}) end
 end
 
 function tUpdater.DownloadFinished( data, http_id )
@@ -121,6 +133,7 @@ function tUpdater.DownloadFinished( data, http_id )
         
         if 		tUpdater:State(http_id) == "checking" 
         then	tUpdater:CheckingVersion(http_id,data)
+                tUpdater:SetModItemTitle(tUpdater.updating[http_id].mod_id," v")
 		elseif 	tUpdater:State(http_id) == "updating" 
 		then	tlog("/ updating complete")
 				tUpdater:SetModItemTitle(tUpdater.updating[http_id].mod_id,"vv")
@@ -188,7 +201,7 @@ function tUpdater:SetModItemTitle(mod_id,title)
 		item:set_parameter("text_id", text_id_new)
 		if self.state.menuOpen then item:dirty() end
 	end
-	tlogArray({ self.state.menuOpen , text_id_old , text_id_new })
+	--tlogArray({ self.state.menuOpen , text_id_old , text_id_new })
 	return item
 end
 

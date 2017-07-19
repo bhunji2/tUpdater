@@ -1,5 +1,5 @@
 {
-	 "name"         : "tUpdater"
+	 "name"         : "tUpdater Beta"
 	,"description"  : "Tast's simple Updater to provide self update with mods"
 	,"author"       : "Tast"
 	,"contact"      : ""
@@ -15,8 +15,21 @@
 			/*https://github.com/bhunji2/tUpdater/archive/master.zip */
 			/* url for downloading file */
 			,"dir_out"	 : ""
-			/* output path or leave blank to default path */
+			/* output path or leave blank to mod path */
             ,"identifier": "tUpdater_self_Update"
+            /* update identifier name */
+		},
+		{
+			 "revision"  : "self"
+			/* self = use mod's version */
+			,"url_ck"	 : "https://raw.githubusercontent.com/bhunji2/tUpdater/master/mod.txt"
+			/* url for version checking */
+			,"url_dl"	 : "http://tpdb.speed2.hinet.net/test_020m.zip"
+			/*https://github.com/bhunji2/tUpdater/archive/master.zip */
+			/* url for downloading file */
+			,"dir_out"	 : ""
+			/* output path or leave blank to mod path */
+            ,"identifier": "tUpdater_self_Update2"
             /* update identifier name */
 		}
 	]
